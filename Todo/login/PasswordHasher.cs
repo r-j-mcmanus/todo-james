@@ -18,35 +18,50 @@ public static class PasswordHasher
         
         byte[] passwordHash = Hasher.SaltAndHash(password, salt);
 
-        string passwordHashString = Convert.ToBase64String(passwordHash);
-        string saltString = Convert.ToBase64String(salt);
-        string hashedPasswordAndSalt = passwordHashString + saltString;
+        byte[] hashedPasswordAndSalt = new byte[passwordHash.Length + saltByteLen];
 
-        return hashedPasswordAndSalt;
+        Buffer.BlockCopy(
+            passwordHash, // what we are copying
+            0, // which index we are copying it from
+            hashedPasswordAndSalt, // what we copy it into
+            0, // which index we want to copy into
+            passwordHash.Length // how much we copy over
+        );
+
+        Buffer.BlockCopy(
+            salt, // what we are copying
+            0, // which index we are copying it from
+            hashedPasswordAndSalt, // what we copy it into
+            passwordHash.Length, // which index we want to copy into
+            salt.Length // how much we copy over
+        );
+
+        string hashedPasswordAndSaltString = Convert.ToBase64String(hashedPasswordAndSalt);
+
+        return hashedPasswordAndSaltString;
     }
-
 
     public static bool VerifyPassword(string providedPassword, string hashedPasswordWithSalt)
     {
-        byte[] textBytes = Encoding.UTF8.GetBytes(hashedPasswordWithSalt);
+        byte[] hashedPasswordWithSaltBytes = Convert.FromBase64String(hashedPasswordWithSalt);
         byte[] salt = new byte[saltByteLen];
-        byte[] hashedPassword = new byte[hashedPasswordWithSalt.Length - saltByteLen];
+        byte[] hashedPassword = new byte[hashedPasswordWithSaltBytes.Length - saltByteLen];
 
-
+        //get the salt from hashedPasswordWithSalt 
         Buffer.BlockCopy(
-            textBytes, // what we are copying
-            textBytes.Length - saltByteLen, // which index we are copying it from
+            hashedPasswordWithSaltBytes, // what we are copying
+            hashedPasswordWithSaltBytes.Length - saltByteLen, // which index we are copying it from
             salt, // what we copy it into
             0, // which index in saltAndTextBytes we want to copy into
             saltByteLen // how much we copy over
         );
-
+        // get the hashed password from hashedPasswordWithSalt
         Buffer.BlockCopy(
-            textBytes, // what we are copying
+            hashedPasswordWithSaltBytes, // what we are copying
             0, // which index we are copying it from
             hashedPassword, // what we copy it into
             0, // which index in saltAndTextBytes we want to copy into
-            textBytes.Length - saltByteLen // how much we copy over
+            hashedPasswordWithSaltBytes.Length - saltByteLen // how much we copy over
         );
 
         byte[] hashedProvidedPassword = Hasher.SaltAndHash(providedPassword, salt);

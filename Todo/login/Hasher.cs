@@ -5,9 +5,13 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("TodoApi.Test")]
 public static class Hasher
 {
-    public static byte[] SaltAndHash(string password, byte[] salt)
+    public static byte[] SaltAndHash(string message, byte[] salt)
     {
-        byte[] textBytes = Encoding.UTF8.GetBytes(password);
+        /*
+        adds the salt to the start of the message and then hash the result 
+        */
+
+        byte[] textBytes = Encoding.UTF8.GetBytes(message);
         byte[] saltAndTextBytes = new byte[salt.Length + textBytes.Length];
 
 
@@ -33,5 +37,35 @@ public static class Hasher
         return hash;
     }
 
+    public static byte[] SaltAndHash(string message, string salt)
+    {
+        /*
+        adds the salt to the start of the message and then hash the result 
+        */
+        byte[] saltArray = Encoding.UTF8.GetBytes(salt);
+        byte[] hash = SaltAndHash(message, saltArray);
 
+        return hash;
+    }
+
+    public static string SaltAndHashString(string message, byte[] salt)
+    {
+        /*
+        adds the salt to the start of the message and then hash the result 
+        */
+        byte[] hash = SaltAndHash(message, salt);
+        string messageHashString = Convert.ToBase64String(hash);
+        return messageHashString;
+    }
+
+    public static string SaltAndHashString(string message, string salt)
+    {
+        /*
+        adds the salt to the start of the message and then hash the result 
+        */
+        byte[] saltArray = Encoding.UTF8.GetBytes(salt);
+        byte[] hash = SaltAndHash(message, saltArray);
+        string messageHashString = Convert.ToBase64String(hash);
+        return messageHashString;
+    }
 }
