@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" context="width-device-width, initial-scale=1.0">
+        <link href="styles.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <header>
+            <h1>Login</h1>
+        </header>
+        <form id="login" class="login-form">
+            <span class="screen-reader-text">Username</span>
+            <input type="text" name="username" placeholder="username">
+            <span class="screen-reader-text">Password</span>
+            <input type="password" name="password" placeholder="password">
+            <div>
+                <button type="submit" id="login-btn">Login</button>
+                <button type="submit" id="register-btn">Register</button>
+            </div>
+        </form>
+        <p id="Error"></p>
+        <script src="login.js"></script>
+    </body>
+</html>

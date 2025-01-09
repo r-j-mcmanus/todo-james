@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Todo</title>
+        <link href="styles.css" rel="stylesheet"/>    
+    </head>
+    <body>
+        <header>
+            <h1>TODO</h1>
+        </header>
+        <form id="todo-form" class="todo-form">
+            <label>
+                <span class="screen-reader-text">New TODO</span>
+                <input type="text" name="todo" placeholder="New TODO">
+            </label>
+            <button>Add</button>
+        </form>
+        <ol id="todo-list" class="todo-list">
+            <li id="unique-made-by-constructor">
+                <button>x</button>
+                <span>wash face</span>
+            </li>
+        </ol>
+        <script src="script.js"></script>
+    </body>
+</html>
