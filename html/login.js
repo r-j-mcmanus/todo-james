@@ -1,7 +1,6 @@
 const form = document.getElementById("login-form");
 
-
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
     event.preventDefault(); // prevents reloading on click
 
     const nameInput = form.elements["username"]

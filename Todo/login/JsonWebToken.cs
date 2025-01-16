@@ -55,8 +55,31 @@ public static class JsonWebToken {
         return secureToken;
     }
 
-    public static class validateToken(){
+    public static bool validateToken(string input){
+        // xxx.yyy.sss
+        string? salt = Environment.GetEnvironmentVariable("JWT_SALT");
 
+        if (salt == null) {
+            throw new Exception("Cannot load env var JWT_SALT");
+        }
+
+        int lastDotIndex = input.LastIndexOf('.');
+
+        if(lastDotIndex == -1){ // might need to check if lastDotIndex is len
+            return false;
+        }
+
+        string inputSig = input.Substring(lastDotIndex+1);
+        string inputToken = input.Substring(0, lastDotIndex);
+
+        byte[] tokenSig = Hasher.SaltAndHash(inputToken, salt);
+        string tokenSigStr = Base64UrlEncode(tokenSig);
+
+        if(inputSig == tokenSigStr){
+            return true;
+        }
+        
+        return false;
     }
 
     private static string Base64UrlEncode(string input) {
