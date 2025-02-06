@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 class UserDb:  DbContext
 {
-    public UserDb(DbContextOptions<TodoDb> options) : base(options){
+    public UserDb(DbContextOptions<UserDb> options) : base(options){
 
     }
 
